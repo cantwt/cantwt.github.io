@@ -39,20 +39,24 @@ body {
 
 #xp1 {
     background: #594c86;
-    height: 100px;
+    height: 1.5%;
+    min-height: 10px;
 }
 
 #xp2 {
      background: #1fa682;
-     height: 100px;
+     height: 2/4%;
+     min-height: 16px;
 }
 
 #xp3 {
     background: #00ff9a;
-    height: 100px; 
+    height: 3.9%;
+    min-height: 26px; 
 }
 
 #xp4 {
     background: #b8ffe2;
-    height: 100px;
+    height: 6.4%;
+    min-height: 42px;
 }
