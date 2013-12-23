@@ -1,62 +1,71 @@
 @import url(http://fonts.googleapis.com/css?family=Finger+Paint);
 
-h1 { 
-	font-family: 'Finger Paint', cursive;
-	font-size: 300%;
-	color: #8d7f4e;
-}
 body {
     background: #ffea95;
     margin: 0px;
-
-}
-
-#parent{ background: #999;padding:0px;}
-
-#xp1, #xp2, #xp3, #xp4 {
-}
-
-#xpParent{
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: relative;
 }
 
-#sunset {
+.xp1, .xp2, .xp3, .xp4 .sunset {
+    position:relative;
+}
+
+.xpParent{
+    width: 100%;
+    height: 100%;
+}
+
+.sunset {
     background: linear-gradient(0deg, #ffab46, #ff81a5);
     height: 100px;
+    display:block;
 }
 
-#sun {
+.sun {
     display: block;
     margin-left: auto;
     margin-right: auto;
     max-width: 100px;
-    margin-left:auto;
-    margin-right:auto;
     padding-top:2%;
 }
 
-#xp1 {
+.xp1 {
     background: #594c86;
-    height: 1.5%;
+    height: 2.6%;
     min-height: 10px;
 }
 
-#xp2 {
+.xp2 {
      background: #1fa682;
-     height: 2/4%;
+     height: 4%;
      min-height: 16px;
 }
 
-#xp3 {
+.xp3 {
     background: #00ff9a;
     height: 3.9%;
     min-height: 26px; 
 }
 
-#xp4 {
+.xp4 {
     background: #b8ffe2;
     height: 6.4%;
     min-height: 42px;
+}
+
+.navbar {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.navbar li {
+    display: inline-block;
+    text-align: center;
+    width: 25%;
+    font-family: 'Finger Paint', cursive;
+	font-size: 300%;
+    margin: 20px 0;
+	color: #8d7f4e;
 }

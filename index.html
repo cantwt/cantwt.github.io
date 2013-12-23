@@ -5,14 +5,17 @@
         <title>Cantwell on the Shore</title>
 	</head>
 <body>
-    <div id="parent">
-        <div id="sunset">
-            <img id="sun" src="sun.png"/>
+    <div>
+        <div class="sunset">
+            <img class="sun" src="sun.png" />
         </div>
-        <div id="xp1"></div>
-        <div id="xp2"></div>
-        <div id="xp3"></div>
-        <div id="xp4"></div>
+        <div class="xp1"></div>
+        <div class="xp2"></div>
+        <div class="xp3"></div>
+        <div class="xp4"></div>
+        <ul class="navbar" ng-init="sections=['Home', 'Work', 'Me', 'Connect']">
+            <li ng-repeat="section in sections">{{section}}</li>
+        </ul>
     </div>
     <script src="angular.min.js"></script>
 </body>
