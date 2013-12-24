@@ -4,19 +4,19 @@
         <link href="ctwl.css" rel="stylesheet" />
         <title>Cantwell on the Shore</title>
 	</head>
-<body>
-    <div>
-        <div class="sunset">
-            <img class="sun" src="sun.png" />
+    <body>
+        <div id="menu">
+            <div class="sunset">
+                <img class="sun" src="sun.png" />
+            </div>
+            <div class="xp1"></div>
+            <div class="xp2"></div>
+            <div class="xp3"></div>
+            <div class="xp4"></div>
         </div>
-        <div class="xp1"></div>
-        <div class="xp2"></div>
-        <div class="xp3"></div>
-        <div class="xp4"></div>
         <ul class="navbar" ng-init="sections=['Home', 'Work', 'Me', 'Connect']">
             <li ng-repeat="section in sections">{{section}}</li>
         </ul>
-    </div>
-    <script src="angular.min.js"></script>
-</body>
+        <script src="angular.min.js"></script>
+    </body>
 </html>
