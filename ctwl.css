@@ -105,6 +105,10 @@ h1 {
         font-size: 500%;
     }
 
+    #navCont {
+        margin-top: 440px;
+    }
+
     .sunset {
         height: 200px;
     }
