@@ -88,7 +88,7 @@ body {
 }
 
 
-@media screen and (max-width: 639px) {
+@media screen and (max-width: 767px) {
     .navbar li {
         display: block;
         padding: 0;
