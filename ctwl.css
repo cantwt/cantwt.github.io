@@ -95,7 +95,7 @@ h1 {
 }
 
 
-@media only screen and (max-width: 800px), (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (max-width: 800px) {
     h1 {
         font-size: 700%;
     }
@@ -132,9 +132,5 @@ h1 {
 
     .xp4 {
         height: 84px;
-    }
-
-    html {
-        zoom: 25%;
     }
 }
