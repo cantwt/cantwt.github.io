@@ -13,9 +13,9 @@ $( document ).ready(function() {
         height:{
             stop: 50,
             time: 0,
-            duration: 10,
+            duration: 0.8,
             units: 'px',
-            effect: 'easeInOut'
+            effect: 'quadIn'
         }
     }); 
     
@@ -23,9 +23,9 @@ $( document ).ready(function() {
         height:{
             stop: 68,
             time: 0,
-            duration: 10,
+            duration: 0.8,
             units: 'px',
-            effect: 'easeInOut'
+            effect: 'quadIn'
         }
     }); 
     
@@ -33,9 +33,9 @@ $( document ).ready(function() {
         height:{
             stop: 80,
             time: 0,
-            duration: 10,
+            duration: 0.8,
             units: 'px',
-            effect: 'easeInOut'
+            effect: 'quadIn'
         }
     });
     
@@ -44,9 +44,9 @@ $( document ).ready(function() {
         height:{
             stop: 100,
             time: 0,
-            duration: 10,
+            duration: 0.8,
             units: 'px',
-            effect: 'easeInOut'
+            effect: 'quadIn'
         }
     });
     
