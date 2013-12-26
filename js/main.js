@@ -9,47 +9,48 @@ $( document ).ready(function() {
     h3 = $( '.xp3' ).css('height');
     h4 = $( '.xp4' ).css('height');
     
-    $( '.xp1' ).tween({
+    $( '#w1' ).tween({
         height:{
             stop: 50,
             time: 0,
-            duration: 0.8,
+            duration: 0.6,
             units: 'px',
-            effect: 'quadIn'
+            effect: 'linear'
         }
     }); 
     
-    $( '.xp2' ).tween({
+    $( '#w2' ).tween({
         height:{
             stop: 68,
-            time: 0,
-            duration: 0.8,
+            time: 0.16,
+            duration: 0.5,
             units: 'px',
-            effect: 'quadIn'
+            effect: 'linear'
         }
     }); 
     
-    $( '.xp3' ).tween({
+    $( '#w3' ).tween({
         height:{
             stop: 80,
-            time: 0,
-            duration: 0.8,
+            time: 0.32,
+            duration: 0.35,
             units: 'px',
-            effect: 'quadIn'
+            effect: 'linear'
         }
     });
     
     
-    $( '.xp4' ).tween({
+    $( '#w4' ).tween({
         height:{
-            stop: 100,
+            start: 0,
+            stop: 20,
             time: 0,
-            duration: 0.8,
-            units: 'px',
-            effect: 'quadIn'
+            duration: 0.25,
+            units: '%',
+            effect: 'linear'
         }
     });
     
     
-    $.play();
+    //$.play();
 });
