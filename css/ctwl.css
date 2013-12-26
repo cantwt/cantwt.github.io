@@ -88,7 +88,7 @@ h1 {
 
 .navbar li {
     display: inline-block;
-    padding: 30px;
+    padding: 20px;
     font-family: 'Finger Paint', cursive;
 	font-size: 250%;
 	color: #8d7f4e;
@@ -133,4 +133,20 @@ h1 {
     .xp4 {
         height: 84px;
     }
+}
+
+.css-class-add, .css-class-remove {
+  -webkit-transition: 3.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+  -moz-transition: 3.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+  -o-transition: 3.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+  transition: 3.0s cubic-bezier(0.250, 0.460, 0.450, 0.940) all;
+}
+ 
+.css-class,
+.css-class-add.css-class-add-active {
+  opacity: 0;
+}
+ 
+.css-class-remove.css-class-remove-active {
+  opacity: 1;
 }

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html ng-app>
+<html>
 	<head>
-        <link href="ctwl.css" rel="stylesheet" />
+        <link href="css/ctwl.css" rel="stylesheet" />
         <title>Cantwell on the Shore</title>
 	</head>
     <body>
         <div id="shore">
             <div class="sunset">
-                <img class="sun" src="sun.png" />
+                <img class="sun" src="img/sun.png" />
             </div>
             <div class="xp1"></div>
             <div class="xp2"></div>
@@ -16,10 +16,14 @@
         </div>
         <div id="navCont">
             <h1>Tim Cantwell</h1>
-            <ul class="navbar" ng-init="sections=['Home', 'Work', 'Me', 'Connect']">
-                <li ng-repeat="section in sections">{{section}}</li>
+            <ul class="navbar">
+                <li>Work</li>
+                <li>About</li>
+                <li>Contact</li>
             </ul>
         </div>
-        <script src="angular.min.js"></script>
+        <script src="lib/jquery/jquery.js"></script>
+        <script src="lib/jquery/jstween-1.1.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>
