@@ -31,8 +31,8 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width: 100px;
-    padding-top:30px;
+    height: 200%;
+    padding-top:1%;
     position: relative;
 }
 
@@ -57,7 +57,6 @@ body {
 #w4 {
     background: #adffde;
     height: 8%;
-    z-index: 10;
     position: relative;
 }
 
@@ -111,23 +110,19 @@ h1 {
     }
 
     #sun {
-        max-width: 200px;
-        padding-top:60px;
+        //max-width: 200px;
+        //padding-top:60px;
     }
 
     #w1 {
-        min-height: 20px;
     }
 
     #w2 {
-         min-height: 32px;
     }
 
     #w3 {
-        min-height: 52px; 
     }
 
     #w4 {
-        height: 84px;
     }
 }
