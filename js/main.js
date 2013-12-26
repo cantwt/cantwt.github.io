@@ -11,30 +11,33 @@ $( document ).ready(function() {
     
     $( '#w1' ).tween({
         height:{
-            stop: 50,
+            start: 0,
+            stop: 5,
             time: 0,
             duration: 0.6,
-            units: 'px',
+            units: '%',
             effect: 'linear'
         }
     }); 
     
     $( '#w2' ).tween({
         height:{
-            stop: 68,
+            start: 0,
+            stop: 10,
             time: 0.16,
             duration: 0.5,
-            units: 'px',
+            units: '%',
             effect: 'linear'
         }
     }); 
     
     $( '#w3' ).tween({
         height:{
-            stop: 80,
+            start: 0,
+            stop: 30,
             time: 0.32,
             duration: 0.35,
-            units: 'px',
+            units: '%',
             effect: 'linear'
         }
     });
@@ -43,14 +46,61 @@ $( document ).ready(function() {
     $( '#w4' ).tween({
         height:{
             start: 0,
-            stop: 20,
-            time: 0,
-            duration: 0.25,
+            stop: 40,
+            time: 0.48,
+            duration: 0.35,
             units: '%',
             effect: 'linear'
         }
     });
     
     
-    //$.play();
+    $.play();
+    
+    $( '#w1' ).tween({
+        height:{
+            start: 5,
+            stop: 0,
+            time: 3,
+            duration: 0.6,
+            units: '%',
+            effect: 'linear'
+        }
+    }); 
+    
+    $( '#w2' ).tween({
+        height:{
+            start: 10,
+            stop: 0,
+            time: 3,
+            duration: 0.5,
+            units: '%',
+            effect: 'linear'
+        }
+    }); 
+    
+    $( '#w3' ).tween({
+        height:{
+            start: 30,
+            stop: 0,
+            time: 3,
+            duration: 0.35,
+            units: '%',
+            effect: 'linear'
+        }
+    });
+    
+    
+    $( '#w4' ).tween({
+        height:{
+            start: 40,
+            stop: 0,
+            time: 3,
+            duration: 0.35,
+            units: '%',
+            effect: 'linear'
+        }
+    });
+    
+    $.play();
 });

@@ -6,6 +6,7 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
+    overflow: hidden;
 }
 
 .xpParent{
@@ -22,7 +23,7 @@ body {
 
 #sunset {
     background: linear-gradient(0deg, #ffab46, #ff81a5);
-    height: 12%;
+    height: 100px;
     position: relative;
 }
 
@@ -31,32 +32,32 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 200%;
-    padding-top:1%;
+    max-width: 100px;
+    padding-top: 20px;
     position: relative;
 }
 
 #w1 {
     background: #594c86;
-    height: 2%;
+    min-height: 10px;
     position: relative;
 }
 
 #w2 {
-     background: #1fa682;
-     height: 3%;
-     position: relative;
+    background: #1fa682;
+    min-height: 16px;
+    position: relative;
 }
 
 #w3 {
     background: #00ff9a;
-    height: 5%; 
+    min-height: 26px;
     position: relative;
 }
 
 #w4 {
     background: #adffde;
-    height: 8%;
+    min-height: 42px;
     position: relative;
 }
 
@@ -64,13 +65,13 @@ body {
     text-align: center;
     position: absolute;
     width:100%;
-    margin: 220px auto auto 0;
+    margin: 250px auto auto 0;
 }
 
 h1 {
     font-family: 'Finger Paint', cursive;
 	font-size: 350%;
-	color: #8d7f4e;
+	color: #8d804e;
     padding: 0;
     margin: 0;
 }
@@ -110,8 +111,8 @@ h1 {
     }
 
     #sun {
-        //max-width: 200px;
-        //padding-top:60px;
+        max-width: 200px;
+        padding-top:60px;
     }
 
     #w1 {
