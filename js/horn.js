@@ -37,6 +37,7 @@ this.myNameSpace = this.myNameSpace || {};
             var instance;
             
             queue.installPlugin(createjs.Sound);
+            createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.HTMLAudioPlugin]);
             queue.addEventListener('complete', loadProxy);
             queue.loadManifest([
                 { id: 'Horn', src: 'AirHorn4.ogg', data: 1 }
