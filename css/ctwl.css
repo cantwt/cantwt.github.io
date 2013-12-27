@@ -6,18 +6,12 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
-    overflow: hidden;
-}
-
-.xpParent{
-    width: 100%;
-    height: 100%;
 }
 
 #shore {
     position: absolute;
     width: 100%;
-    height: 100%;
+    //height: 100%;
     z-index:10;
 }
 
@@ -103,7 +97,7 @@ h1 {
     }
 
     #navCont {
-        margin-top: 440px;
+        margin-top: 500px;
     }
 
     #sunset {
@@ -112,7 +106,7 @@ h1 {
 
     #sun {
         max-width: 200px;
-        padding-top:60px;
+        padding-top: 60px;
     }
 
     #w1 {

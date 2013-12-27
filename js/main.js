@@ -1,7 +1,7 @@
 $( document ).ready(function() {
     $( "li" ).click(function( event ) {
-        event.preventDefault();
-        $( this ).hide( "slow" );
+        //event.preventDefault();
+        //$( this ).hide( "slow" );
     });
     
     h1 = $( '.xp1' ).css('height');
@@ -53,9 +53,6 @@ $( document ).ready(function() {
             effect: 'linear'
         }
     });
-    
-    
-    $.play();
     
     $( '#w1' ).tween({
         height:{
