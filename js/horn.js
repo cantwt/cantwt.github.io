@@ -30,14 +30,14 @@ this.myNameSpace = this.myNameSpace || {};
         init: function() {
             this.displayMessage = document.getElementById("status");
 
-            if (!createjs.Sound.initializeDefaultPlugins()) {return;}
+            //if (!createjs.Sound.initializeDefaultPlugins()) {return;}
             
             var queue = new createjs.LoadQueue();
             var loadProxy = createjs.proxy(this.handleLoad, this);
             var instance;
             
             queue.installPlugin(createjs.Sound);
-            createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.HTMLAudioPlugin]);
+            createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin, createjs.WebAudioPlugin]);
             queue.addEventListener('complete', loadProxy);
             queue.loadManifest([
                 { id: 'Horn', src: 'AirHorn4.ogg', data: 1 }
