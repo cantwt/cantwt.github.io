@@ -1,18 +1,14 @@
-var mySound;
-
-$( document ).ready(function() {
-    buzz.defaults.formats = [ 'ogg', 'mp3' ];
-
-    mySound = new buzz.sound( "AirHorn" );
-    
-    mySound.play()
-        .bind( "timeupdate", function() {
-            var timer = buzz.toTimer( this.getTime() );
-            document.getElementById( "timer" ).innerHTML = timer;
-        });
+var sound = new Howl({
+    urls: ['AirHorn.ogg', 'AirHorn.mp3']
 });
 
-function play() {
-    mySound.stop();
-    mySound.play();
+document.addEventListener('keydown', function(event) {
+    if(event.keyCode == 81) {
+        sound.stop();
+    }
+});
+
+function play () {
+    sound.stop();
+    sound.play();
 }
