@@ -40,7 +40,7 @@ this.myNameSpace = this.myNameSpace || {};
             createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin, createjs.WebAudioPlugin]);
             queue.addEventListener('complete', loadProxy);
             queue.loadManifest([
-                { id: 'Horn', src: 'AirHorn4.ogg', data: 1 }
+                { id: 'Horn', src: 'AirHorn5.ogg', data: 1 }
             ]);
 
             this.displayMessage.innerHTML = "loading audio";
