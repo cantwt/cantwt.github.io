@@ -1,14 +1,14 @@
-var sound = new Howl({
-    urls: ['AirHorn.ogg', 'AirHorn/mp3']
-}).play();
-
-document.addEventListener('keydown', function(event) {
-    if(event.keyCode == 81) {
-        sound.pause();
-    }
+var mySound = new buzz.sound( "AirHorn", {
+    formats: [ "ogg", "mp3" ]
 });
 
-function play () {
-    sound.stop();
-    sound.play();
+mySound.play()
+    .bind( "timeupdate", function() {
+        var timer = buzz.toTimer( this.getTime() );
+        document.getElementById( "timer" ).innerHTML = timer;
+    });
+
+function play() {
+    mySound.stop();
+    mySound.play();
 }
