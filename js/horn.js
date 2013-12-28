@@ -36,8 +36,8 @@ this.myNameSpace = this.myNameSpace || {};
             var loadProxy = createjs.proxy(this.handleLoad, this);
             var instance;
             
+            createjs.Sound.alternateExtensions = ['mp3'];
             queue.installPlugin(createjs.Sound);
-            createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin, createjs.WebAudioPlugin]);
             queue.addEventListener('complete', loadProxy);
             queue.loadManifest([
                 { id: 'Horn', src: 'AirHorn.ogg', data: 1 }
