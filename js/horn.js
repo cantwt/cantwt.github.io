@@ -1,5 +1,9 @@
-var sound = new Howl({
-    urls: ['AirHorn.ogg', 'AirHorn.mp3']
+var sound;
+
+$( document ).ready( function() {
+    sound = new Howl({
+        urls: ['AirHorn.ogg', 'AirHorn.mp3']
+    });
 });
 
 document.addEventListener('keydown', function(event) {
