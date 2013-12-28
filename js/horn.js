@@ -1,69 +1,18 @@
-'use strict';
+var mySound;
 
-var display;
+$( document ).ready(function() {
+    buzz.defaults.formats = [ 'ogg', 'mp3' ];
+    
+    mySound = new buzz.sound('AirHorn');
 
-function init() {
-    display = document.getElementById("status");
-    display.addEventListener("click", handleClick, false);
-    display.innerHTML = "Touch to Start";
-}
-
-function handleClick(event) {
-    display.removeEventListener("click", handleClick, false);
-    var myApp = new myNameSpace.MyApp();
-}
-
-
-
-this.myNameSpace = this.myNameSpace || {};
-(function() {
-    // the application
-    function MyApp() {
-        this.init();
-    }
-
-    MyApp.prototype = {
-        displayMessage:null,
-        
-        instance: null,
-
-        init: function() {
-            this.displayMessage = document.getElementById("status");
-
-            //if (!createjs.Sound.initializeDefaultPlugins()) {return;}
-            
-            var queue = new createjs.LoadQueue();
-            var loadProxy = createjs.proxy(this.handleLoad, this);
-            var instance;
-            
-            createjs.Sound.alternateExtensions = ['mp3'];
-            queue.installPlugin(createjs.Sound);
-            queue.addEventListener('complete', loadProxy);
-            queue.loadManifest([
-                { id: 'Horn', src: 'AirHorn.ogg', data: 1 }
-            ]);
-
-            this.displayMessage.innerHTML = "loading audio";
-            
-            document.addEventListener('keydown', createjs.proxy(function(event) {
-                if(event.keyCode == 81) {
-                    this.instance.pause();
-                }
-            }, this));
-        },
-
-        handleLoad: function(event) {
-            createjs.Sound.play('Horn');
-            this.displayMessage.innerHTML = "Playing Horn";
-            this.displayMessage.addEventListener('click', createjs.proxy(this.handlePlayback, this));
-        },
-        
-        handlePlayback: function(event) {
-            this.instance = createjs.Sound.play('Horn', createjs.Sound.INTERRUPT_EARLY);
-            console.log(this.instance);
+    document.addEventListener('keydown', function(event) {
+        if(event.keyCode == 81) {
+            sound.stop();
         }
-        
-    }
+    });
+});
 
-    myNameSpace.MyApp = MyApp;
-}());
+function play () {
+    mySound.stop();
+    mySound.play();
+}
