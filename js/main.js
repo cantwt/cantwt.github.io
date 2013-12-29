@@ -20,9 +20,9 @@ function coverAnim(targetURL) {
     
     $( '#w1' ).tween({
         height:{
-            stop: target*0.1,
+            stop: target*0.071,
             time: 0,
-            duration: 0.2,
+            duration: 0.125,
             units: 'px',
             effect: 'linear'
         }
@@ -30,9 +30,9 @@ function coverAnim(targetURL) {
     
     $( '#w2' ).tween({
         height:{
-            stop: target*0.2,
+            stop: target*0.142,
             time: 0,
-            duration: 0.35,
+            duration: 0.25,
             units: 'px',
             effect: 'linear'
         }
@@ -40,9 +40,9 @@ function coverAnim(targetURL) {
     
     $( '#w3' ).tween({
         height:{
-            stop: target*0.3,
+            stop: target*0.357,
             time: 0,
-            duration: 0.42,
+            duration: 0.375,
             units: 'px',
             effect: 'linear'
         }
@@ -51,7 +51,7 @@ function coverAnim(targetURL) {
     
     $( '#w4' ).tween({
         height:{
-            stop: target*0.4,
+            stop: target*0.43,
             time: 0,
             duration: 0.5,
             units: 'px',
@@ -70,18 +70,7 @@ function coverAnim(targetURL) {
 function revealAnim(target){
     $( '#w1' ).tween({
         height:{
-            start: target*0.1,
-            stop: 0,
-            time: 0,
-            duration: 0.6,
-            units: 'px',
-            effect: 'linear'
-        }
-    }); 
-    
-    $( '#w2' ).tween({
-        height:{
-            start: target*0.2,
+            start: target*0.071,
             stop: 0,
             time: 0,
             duration: 0.5,
@@ -90,12 +79,23 @@ function revealAnim(target){
         }
     }); 
     
-    $( '#w3' ).tween({
+    $( '#w2' ).tween({
         height:{
-            start: target*0.3,
+            start: target*0.142,
             stop: 0,
             time: 0,
-            duration: 0.35,
+            duration: 0.375,
+            units: 'px',
+            effect: 'linear'
+        }
+    }); 
+    
+    $( '#w3' ).tween({
+        height:{
+            start: target*0.357,
+            stop: 0,
+            time: 0,
+            duration: 0.25,
             units: 'px',
             effect: 'linear'
         }
@@ -104,10 +104,10 @@ function revealAnim(target){
     
     $( '#w4' ).tween({
         height:{
-            start: target*0.4,
+            start: target*0.43,
             stop: 0,
             time: 0,
-            duration: 0.35,
+            duration: 0.125,
             units: 'px',
             effect: 'linear'
         }
