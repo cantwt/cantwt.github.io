@@ -21,17 +21,24 @@ function coverAnim(targetURL) {
     $( '#w1' ).tween({
         height:{
             stop: target*0.071,
-            time: 0,
+            time: 0.3,
             duration: 0.2,
             units: 'px',
-            effect: 'linear'
+            effect: 'linear',
+            onStop: function( element, state ){
+                $( '#content' ).load(targetURL, function(){
+                    setTimeout(function() {
+                        revealAnim( target );
+                    }, 100);
+                });
+            }
         }
     }); 
     
     $( '#w2' ).tween({
         height:{
             stop: target*0.142,
-            time: .1,
+            time: 0.2,
             duration: 0.2,
             units: 'px',
             effect: 'linear'
@@ -41,7 +48,7 @@ function coverAnim(targetURL) {
     $( '#w3' ).tween({
         height:{
             stop: target*0.357,
-            time: 0.2,
+            time: 0.1,
             duration: 0.2,
             units: 'px',
             effect: 'linear'
@@ -52,17 +59,11 @@ function coverAnim(targetURL) {
     $( '#w4' ).tween({
         height:{
             stop: target*0.43,
-            time: 0.3,
+            time: 0.0,
             duration: 0.2,
             units: 'px',
-            effect: 'linear', 
-            onStop: function( element, state ){
-                $( '#content' ).load(targetURL, function(){
-                    setTimeout(function() {
-                        revealAnim( target );
-                    }, 100);
-                });
-            }
+            effect: 'linear'
+            
         }
     });
     
