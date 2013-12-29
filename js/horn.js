@@ -1,4 +1,5 @@
 var mySound;
+console.log('executing');
 
 $( document ).ready(function() {
     buzz.defaults.formats = [ 'ogg', 'mp3' ];

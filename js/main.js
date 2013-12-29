@@ -10,16 +10,17 @@ $( document ).ready(function() {
     h4 = $( '.xp4' ).css('height');
     
     var $cont = $( '#content' );
-    var height = $cont.offset().top + $cont.height();
-    
-    $( '#hook' ).text( height );
+    var height = $cont.height();
 });
 
 
-function anim() {
+function coverAnim(targetURL) {
+    var $w = $(window);
+    var target = $w.height() + $w.scrollTop() - 100;
+    
     $( '#w1' ).tween({
         height:{
-            stop: 40,
+            stop: target*0.1,
             time: 0,
             duration: 0.2,
             units: 'px',
@@ -29,7 +30,7 @@ function anim() {
     
     $( '#w2' ).tween({
         height:{
-            stop: 60,
+            stop: target*0.2,
             time: 0,
             duration: 0.35,
             units: 'px',
@@ -39,7 +40,7 @@ function anim() {
     
     $( '#w3' ).tween({
         height:{
-            stop: 100,
+            stop: target*0.3,
             time: 0,
             duration: 0.42,
             units: 'px',
@@ -50,20 +51,28 @@ function anim() {
     
     $( '#w4' ).tween({
         height:{
-            stop: 1798,
+            stop: target*0.4,
             time: 0,
             duration: 0.5,
             units: 'px',
-            effect: 'linear'
+            effect: 'linear', 
+            onStop: function( element, state ){
+                $( '#content' ).load(targetURL, function(){
+                    revealAnim( target );
+                });
+            }
         }
     });
     
-    
+    $.play()
+}
+
+function revealAnim(target){
     $( '#w1' ).tween({
         height:{
-            start: 40,
+            start: target*0.1,
             stop: 0,
-            time: 2,
+            time: 0,
             duration: 0.6,
             units: 'px',
             effect: 'linear'
@@ -72,9 +81,9 @@ function anim() {
     
     $( '#w2' ).tween({
         height:{
-            start: 60,
+            start: target*0.2,
             stop: 0,
-            time: 2,
+            time: 0,
             duration: 0.5,
             units: 'px',
             effect: 'linear'
@@ -83,9 +92,9 @@ function anim() {
     
     $( '#w3' ).tween({
         height:{
-            start: 100,
+            start: target*0.3,
             stop: 0,
-            time: 2,
+            time: 0,
             duration: 0.35,
             units: 'px',
             effect: 'linear'
@@ -95,15 +104,14 @@ function anim() {
     
     $( '#w4' ).tween({
         height:{
-            start: 1798,
+            start: target*0.4,
             stop: 0,
-            time: 2,
+            time: 0,
             duration: 0.35,
             units: 'px',
             effect: 'linear'
         }
     });
-    
     
     $.play();
 }
