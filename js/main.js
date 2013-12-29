@@ -22,7 +22,7 @@ function coverAnim(targetURL) {
         height:{
             stop: target*0.071,
             time: 0,
-            duration: 0.125,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
@@ -31,8 +31,8 @@ function coverAnim(targetURL) {
     $( '#w2' ).tween({
         height:{
             stop: target*0.142,
-            time: 0,
-            duration: 0.25,
+            time: .1,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
@@ -41,8 +41,8 @@ function coverAnim(targetURL) {
     $( '#w3' ).tween({
         height:{
             stop: target*0.357,
-            time: 0,
-            duration: 0.375,
+            time: 0.2,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
@@ -52,8 +52,8 @@ function coverAnim(targetURL) {
     $( '#w4' ).tween({
         height:{
             stop: target*0.43,
-            time: 0,
-            duration: 0.5,
+            time: 0.3,
+            duration: 0.2,
             units: 'px',
             effect: 'linear', 
             onStop: function( element, state ){
@@ -75,7 +75,7 @@ function revealAnim(target){
             start: target*0.071,
             stop: 0,
             time: 0,
-            duration: 0.5,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
@@ -85,8 +85,8 @@ function revealAnim(target){
         height:{
             start: target*0.142,
             stop: 0,
-            time: 0,
-            duration: 0.375,
+            time: 0.1,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
@@ -96,8 +96,8 @@ function revealAnim(target){
         height:{
             start: target*0.357,
             stop: 0,
-            time: 0,
-            duration: 0.25,
+            time: 0.2,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
@@ -108,8 +108,8 @@ function revealAnim(target){
         height:{
             start: target*0.43,
             stop: 0,
-            time: 0,
-            duration: 0.125,
+            time: 0.3,
+            duration: 0.2,
             units: 'px',
             effect: 'linear'
         }
