@@ -58,7 +58,9 @@ function coverAnim(targetURL) {
             effect: 'linear', 
             onStop: function( element, state ){
                 $( '#content' ).load(targetURL, function(){
-                    revealAnim( target );
+                    setTimeout(function() {
+                        revealAnim( target );
+                    }, 100);
                 });
             }
         }
