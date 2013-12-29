@@ -9,95 +9,101 @@ $( document ).ready(function() {
     h3 = $( '.xp3' ).css('height');
     h4 = $( '.xp4' ).css('height');
     
+    var $cont = $( '#content' );
+    var height = $cont.offset().top + $cont.height();
+    
+    $( '#hook' ).text( height );
+});
+
+
+function anim() {
     $( '#w1' ).tween({
         height:{
-            start: 0,
-            stop: 5,
-            time: 0,
-            duration: 0.6,
-            units: '%',
-            effect: 'linear'
-        }
-    }); 
-    
-    $( '#w2' ).tween({
-        height:{
-            start: 0,
-            stop: 10,
-            time: 0.16,
-            duration: 0.5,
-            units: '%',
-            effect: 'linear'
-        }
-    }); 
-    
-    $( '#w3' ).tween({
-        height:{
-            start: 0,
-            stop: 30,
-            time: 0.32,
-            duration: 0.35,
-            units: '%',
-            effect: 'linear'
-        }
-    });
-    
-    
-    $( '#w4' ).tween({
-        height:{
-            start: 0,
             stop: 40,
-            time: 0.48,
-            duration: 0.35,
-            units: '%',
-            effect: 'linear'
-        }
-    });
-    
-    $( '#w1' ).tween({
-        height:{
-            start: 5,
-            stop: 0,
-            time: 3,
-            duration: 0.6,
-            units: '%',
+            time: 0,
+            duration: 0.2,
+            units: 'px',
             effect: 'linear'
         }
     }); 
     
     $( '#w2' ).tween({
         height:{
-            start: 10,
-            stop: 0,
-            time: 3,
-            duration: 0.5,
-            units: '%',
+            stop: 60,
+            time: 0,
+            duration: 0.35,
+            units: 'px',
             effect: 'linear'
         }
     }); 
     
     $( '#w3' ).tween({
         height:{
-            start: 30,
-            stop: 0,
-            time: 3,
-            duration: 0.35,
-            units: '%',
+            stop: 100,
+            time: 0,
+            duration: 0.42,
+            units: 'px',
             effect: 'linear'
         }
     });
     
     
     $( '#w4' ).tween({
+        height:{
+            stop: 1798,
+            time: 0,
+            duration: 0.5,
+            units: 'px',
+            effect: 'linear'
+        }
+    });
+    
+    
+    $( '#w1' ).tween({
         height:{
             start: 40,
             stop: 0,
-            time: 3,
+            time: 2,
+            duration: 0.6,
+            units: 'px',
+            effect: 'linear'
+        }
+    }); 
+    
+    $( '#w2' ).tween({
+        height:{
+            start: 60,
+            stop: 0,
+            time: 2,
+            duration: 0.5,
+            units: 'px',
+            effect: 'linear'
+        }
+    }); 
+    
+    $( '#w3' ).tween({
+        height:{
+            start: 100,
+            stop: 0,
+            time: 2,
             duration: 0.35,
-            units: '%',
+            units: 'px',
             effect: 'linear'
         }
     });
     
+    
+    $( '#w4' ).tween({
+        height:{
+            start: 1798,
+            stop: 0,
+            time: 2,
+            duration: 0.35,
+            units: 'px',
+            effect: 'linear'
+        }
+    });
+    
+    
     $.play();
-});
+}
