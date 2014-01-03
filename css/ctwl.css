@@ -1,4 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Finger+Paint);
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
 
 body {
@@ -123,15 +122,19 @@ p {
     }
 
     #w1 {
+        min-height: 20px;
     }
 
     #w2 {
+        min-height: 32px;
     }
 
     #w3 {
+        min-height: 52px;
     }
 
     #w4 {
+        min-height: 84px;
     }
     
     p {
