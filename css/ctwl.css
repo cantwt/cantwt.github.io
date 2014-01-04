@@ -64,7 +64,7 @@ body {
 
 h1 {
     font-family: 'Source Sans Pro', sans-serif;
-	font-size: 350%;
+	font-size: 250%;
 	color: #8d804e;
     padding: 0;
     margin: 0;
@@ -82,7 +82,7 @@ h1 {
     padding: 20px;
     font-family: 'Source Sans Pro', sans-serif;
     //font-family: 'Finger Paint', cursive;
-	font-size: 250%;
+	font-size: 200%;
 	color: #8d7f4e;
 }
 
@@ -99,9 +99,9 @@ p {
     margin-left: auto;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 640px) {
     h1 {
-        font-size: 700%;
+        font-size: 500%;
     }
     .navbar li {
         display: block;

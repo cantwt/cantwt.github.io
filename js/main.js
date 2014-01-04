@@ -27,23 +27,15 @@ function coverAnim(targetURL) {
     
     var tween1 = new TWEEN.Tween( {h: $w1.css('min-height')} )
         .to( { h: target*0.071 }, 200 )
-        .delay( 300 )
         .easing( TWEEN.Easing.Linear.None )
         .onUpdate( function() {
             $w1.css('height', this.h+'px');
         } )
-        .onComplete( function () {
-            $( '#content' ).load(targetURL, function(){
-                setTimeout( function(){
-                    revealAnim( target );
-                }, 100);
-            });
-        })
         .start();
     
     var tween2 = new TWEEN.Tween( {h: $w2.css('min-height')} )
         .to( { h: target*0.142 }, 200 )
-        .delay( 200 )
+        .delay( 100 )
         .easing( TWEEN.Easing.Linear.None )
         .onUpdate( function() {
             $w2.css('height', this.h+'px');
@@ -52,7 +44,7 @@ function coverAnim(targetURL) {
     
    var tween3 = new TWEEN.Tween( {h: $w3.css('min-height')} )
         .to( { h: target*0.357 }, 200 )
-        .delay( 100 )
+        .delay( 200 )
         .easing( TWEEN.Easing.Linear.None )
         .onUpdate( function() {
             $w3.css('height', this.h+'px');
@@ -62,10 +54,18 @@ function coverAnim(targetURL) {
     
     var tween4 = new TWEEN.Tween( {h: $w4.css('min-height')} )
         .to( { h: target*0.43 }, 200 )
+        .delay( 300 )
         .easing( TWEEN.Easing.Linear.None )
         .onUpdate( function() {
             $w4.css('height', this.h+'px');
         } )
+        .onComplete( function () {
+            $( '#content' ).load(targetURL, function(){
+                setTimeout( function(){
+                    revealAnim( target );
+                }, 100);
+            });
+        })
         .start();
 }
 
