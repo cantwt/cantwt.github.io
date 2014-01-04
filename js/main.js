@@ -1,3 +1,5 @@
+var doAnimation = true;
+
 $( document ).ready(function() {
     $( "li" ).click(function( event ) {
         //event.preventDefault();
@@ -19,6 +21,7 @@ $( document ).ready(function() {
 function coverAnim(targetURL) {
     var $w = $(window);
     var target = $w.height() + $w.scrollTop() - 100;
+    doAnimation = true;
     
     var $w1 = $( '#w1' );
     var $w2 = $( '#w2' );
@@ -67,6 +70,8 @@ function coverAnim(targetURL) {
             });
         })
         .start();
+    
+    animate();
 }
 
 function revealAnim(target){
@@ -109,10 +114,15 @@ function revealAnim(target){
         .onUpdate( function() {
             $w4.css('height', this.h+'px');
         } )
+        .onComplete( function(){
+            doAnimation = false;
+        })
         .start();
 }
 
 function animate() {
-    requestAnimationFrame( animate );
-	TWEEN.update();
+    if(doAnimation){
+        requestAnimationFrame( animate );
+        TWEEN.update();
+    }
 }
