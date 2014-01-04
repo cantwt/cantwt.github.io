@@ -11,6 +11,8 @@ $( document ).ready(function() {
     
     var $cont = $( '#content' );
     var height = $cont.height();
+    
+    animate();
 });
 
 
@@ -18,103 +20,99 @@ function coverAnim(targetURL) {
     var $w = $(window);
     var target = $w.height() + $w.scrollTop() - 100;
     
-    $( '#w1' ).tween({
-        height:{
-            stop: target*0.071,
-            time: 0.3,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear',
-            onStop: function( element, state ){
-                $( '#content' ).load(targetURL, function(){
-                    setTimeout(function() {
-                        revealAnim( target );
-                    }, 100);
-                });
-            }
-        }
-    }); 
+    var $w1 = $( '#w1' );
+    var $w2 = $( '#w2' );
+    var $w3 = $( '#w3' );
+    var $w4 = $( '#w4' );
     
-    $( '#w2' ).tween({
-        height:{
-            stop: target*0.142,
-            time: 0.2,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-        }
-    }); 
+    var tween1 = new TWEEN.Tween( {h: $w1.css('min-height')} )
+        .to( { h: target*0.071 }, 200 )
+        .delay( 300 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w1.css('height', this.h+'px');
+        } )
+        .onComplete( function () {
+            $( '#content' ).load(targetURL, function(){
+                setTimeout( function(){
+                    revealAnim( target );
+                }, 100);
+            });
+        })
+        .start();
     
-    $( '#w3' ).tween({
-        height:{
-            stop: target*0.357,
-            time: 0.1,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-        }
-    });
+    var tween2 = new TWEEN.Tween( {h: $w2.css('min-height')} )
+        .to( { h: target*0.142 }, 200 )
+        .delay( 200 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w2.css('height', this.h+'px');
+        } )
+        .start();
+    
+   var tween3 = new TWEEN.Tween( {h: $w3.css('min-height')} )
+        .to( { h: target*0.357 }, 200 )
+        .delay( 100 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w3.css('height', this.h+'px');
+        } )
+        .start();
     
     
-    $( '#w4' ).tween({
-        height:{
-            stop: target*0.43,
-            time: 0.0,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-            
-        }
-    });
-    
-    $.play()
+    var tween4 = new TWEEN.Tween( {h: $w4.css('min-height')} )
+        .to( { h: target*0.43 }, 200 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w4.css('height', this.h+'px');
+        } )
+        .start();
 }
 
 function revealAnim(target){
-    $( '#w1' ).tween({
-        height:{
-            start: target*0.071,
-            stop: 0,
-            time: 0,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-        }
-    }); 
+    var $w1 = $( '#w1' );
+    var $w2 = $( '#w2' );
+    var $w3 = $( '#w3' );
+    var $w4 = $( '#w4' );
     
-    $( '#w2' ).tween({
-        height:{
-            start: target*0.142,
-            stop: 0,
-            time: 0.1,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-        }
-    }); 
+    var tween1 = new TWEEN.Tween( { h: target*0.071 } )
+        .to( {h: parseInt($w1.css('min-height'))}, 200 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w1.css('height', this.h+'px');
+        } )
+        .start();
+
+    var tween2 = new TWEEN.Tween( { h: target*0.142 } )
+        .to( {h: parseInt($w2.css('min-height'))}, 200 )
+        .delay( 100 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w2.css('height', this.h+'px');
+        } )
+        .start();
     
-    $( '#w3' ).tween({
-        height:{
-            start: target*0.357,
-            stop: 0,
-            time: 0.2,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-        }
-    });
+    var tween3 = new TWEEN.Tween( { h: target*0.357 } )
+        .to( {h: parseInt($w2.css('min-height'))}, 200 )
+        .delay( 200 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w3.css('height', this.h+'px');
+        } )
+        .start();
     
     
-    $( '#w4' ).tween({
-        height:{
-            start: target*0.43,
-            stop: 0,
-            time: 0.3,
-            duration: 0.2,
-            units: 'px',
-            effect: 'linear'
-        }
-    });
-    
-    $.play();
+   var tween4 = new TWEEN.Tween( { h: target*0.43 } )
+        .to( {h: parseInt($w2.css('min-height'))}, 200 )
+        .delay( 300 )
+        .easing( TWEEN.Easing.Linear.None )
+        .onUpdate( function() {
+            $w4.css('height', this.h+'px');
+        } )
+        .start();
+}
+
+function animate() {
+    requestAnimationFrame( animate );
+	TWEEN.update();
 }
