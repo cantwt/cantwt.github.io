@@ -4,7 +4,7 @@ $( document ).ready(function() {
     var list = $( "ul.navbar li" );
     var array = jQuery.makeArray(list);
     
-    array[0].addEventListener('pointerdown', function(e){
+    array[0].addEventListener('pointerup', function(e){
         coverAnim('partials/partial1.html');
     });
     
