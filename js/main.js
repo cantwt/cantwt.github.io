@@ -1,18 +1,20 @@
 var doAnimation = true;
 
 $( document ).ready(function() {
-    $( "li" ).click(function( event ) {
-        //event.preventDefault();
-        //$( this ).hide( "slow" );
+    var list = $( "ul.navbar li" );
+    var array = jQuery.makeArray(list);
+    
+    array[0].addEventListener('pointerdown', function(e){
+        coverAnim('partials/partial1.html');
     });
     
-    h1 = $( '.xp1' ).css('height');
-    h2 = $( '.xp2' ).css('height');
-    h3 = $( '.xp3' ).css('height');
-    h4 = $( '.xp4' ).css('height');
+    array[1].addEventListener('pointerdown', function(e){
+        coverAnim('partials/partial2.html');
+    });
     
-    var $cont = $( '#content' );
-    var height = $cont.height();
+    array[2].addEventListener('pointerdown', function(e){
+        coverAnim('partials/partial3.html');
+    });
     
     animate();
 });
