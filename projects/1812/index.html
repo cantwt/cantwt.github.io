@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://code.createjs.com/createjs-2013.09.25.min.js"></script>
+    <script type="text/javascript" src="assets/scripts/Box2dWeb-2.1.a.3.min.js"></script>
+    <script src="assets/scripts/DataChannel.js"></script>
+  </head>
+  <body onload="init()" id="body">
+    
+    <div id="canvasContainer">
+        <canvas id="myCanvas" width=500 height=500>
+          I'm Sorry, your browser does not support the canvas tag.
+        </canvas>
+        <input type="text" id="channel" value="channel" title="channel name - use your own channel name"/>
+        <button id="init-RTCMultiConnection">Open</button>
+        <button id="join-RTCMultiConnection">Join</button>
+        <button id="leave">Leave</button>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    var b2BodyDef = Box2D.Dynamics.b2BodyDef;
+    var b2Body = Box2D.Dynamics.b2Body;
+    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
+    var b2Fixture = Box2D.Dynamics.b2Fixture;
+    var b2World = Box2D.Dynamics.b2World;
+    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+    var b2CircleShape = Box2D.Collision.Shapes.b2CircleShape;
+
+    var listener = new Box2D.Dynamics.b2ContactListener;
+
+    var box2d = (function() {
+
+    // important box2d scale and speed vars
+    var SCALE = 30, STEP = 20, TIMESTEP = 1/STEP;
+
+    var world;
+    var lastTimestamp = Date.now();
+    var fixedTimestepAccumulator = 0;
+    var bodiesToRemove = [];
+    var actors = [];
+    var bodies = [];
+    var targetActors = [];
+
+    // box2d world setup and boundaries
+    var setup = function() {
+      world = new b2World(new b2Vec2(0,10), true);
+      // boundaries - floor
+      var floorFixture = new b2FixtureDef;
+      floorFixture.density = 1;
+      floorFixture.restitution = 0.5;
+      floorFixture.shape = new b2PolygonShape;
+      floorFixture.shape.SetAsBox((viewWidth+25) / SCALE, 10 / SCALE);
+      var floorBodyDef = new b2BodyDef;
+      floorBodyDef.type = b2Body.b2_staticBody;
+      floorBodyDef.position.x = -25 / SCALE;
+      floorBodyDef.position.y = (viewHeight+10) / SCALE;
+      var floor = world.CreateBody(floorBodyDef);
+      floor.CreateFixture(floorFixture);
+      floor.SetUserData(new wallData('floor'));
+      // boundaries - left
+      var leftFixture = new b2FixtureDef;
+      leftFixture.shape = new b2PolygonShape;
+      leftFixture.shape.SetAsBox(10 / SCALE, (viewHeight+25) / SCALE);
+      var leftBodyDef = new b2BodyDef;
+      leftBodyDef.type = b2Body.b2_staticBody;
+      leftBodyDef.position.x = -9 / SCALE;
+      leftBodyDef.position.y = -25 / SCALE;
+      var left = world.CreateBody(leftBodyDef);
+      left.CreateFixture(leftFixture);
+      left.SetUserData(new wallData('left'));
+      // boundaries - right
+      var rightFixture = new b2FixtureDef;
+      rightFixture.shape = new b2PolygonShape;
+      rightFixture.shape.SetAsBox(10 / SCALE, (viewHeight+25) / SCALE);
+      var rightBodyDef = new b2BodyDef;
+      rightBodyDef.type = b2Body.b2_staticBody;
+      rightBodyDef.position.x = (viewWidth+10) / SCALE;
+      rightBodyDef.position.y = -25 / SCALE;
+      var right = world.CreateBody(rightBodyDef);
+      right.CreateFixture(rightFixture);
+      right.SetUserData(new wallData('right'));
+
+      listener.BeginContact = function(contact) {
+         //console.debug(contact.GetFixtureB().GetBody().GetUserData());
+         //console.log(contact.GetFixtureA().GetBody().GetUserData().id);
+         //console.log(contact.GetFixtureB().GetBody().GetUserData().id);
+         var dataA = contact.GetFixtureA().GetBody().GetUserData();
+         var dataB = contact.GetFixtureB().GetBody().GetUserData();
+
+         if(contact.GetFixtureA().GetBody().GetUserData().id == 'floor'){
+            createjs.Sound.play("click", createjs.Sound.INTERRUPT_EARLY,null,null,null,0.4,(dataB.skin.x-500)/500);
+            bodiesToRemove.push(contact.GetFixtureB().GetBody());
+            bodies.splice(bodies.indexOf(contact.GetFixtureB().GetBody()),1);
+         }
+
+         if(dataB.id == 'target'){
+          //stage.removeChild(dataB.skin);
+          bodiesToRemove.push(contact.GetFixtureB().GetBody());
+          targetCounter--;
+         }
+      }
+      listener.EndContact = function(contact) {
+          // console.log(contact.GetFixtureA().GetBody().GetUserData());
+      }
+      listener.PostSolve = function(contact, impulse) {
+          
+      }
+      listener.PreSolve = function(contact, oldManifold) {
+
+      }
+      world.SetContactListener(listener);
+    }
+
+    // actor object - this is responsible for taking the body's position and translating it to your easel display object
+    var actorObject = function(body, skin, id) {
+      this.body = body;
+      this.skin = skin;
+      this.id = id;
+      this.update = function() {  // translate box2d positions to pixels
+        this.skin.rotation = this.body.GetAngle() * (180 / Math.PI);
+        this.skin.x = this.body.GetWorldCenter().x * SCALE;
+        this.skin.y = this.body.GetWorldCenter().y * SCALE;
+      }
+      actors.push(this);
+      this.removeActor = function() {
+        stage.removeChild(this.skin);
+        actors.splice(actors.indexOf(this),1);
+      }
+    }
+
+    var wallData = function(wall) {
+      this.id = wall;
+    }
+
+    var targetActor = function(x, y, radius,color){
+      this.id = 'target';
+      this.x = x;
+      this.y = y;
+      this.rad = radius;
+      this.color = color;
+      this.skin = new createjs.Shape();
+      this.skin.graphics.setStrokeStyle(15);
+      this.skin.graphics.beginStroke(this.color);
+      this.skin.graphics.drawCircle(0,0,radius);
+      this.skin.alpha = 1;
+      this.skin.x = x;
+      this.skin.y = y;
+      this.death = targetDeaths[Math.floor(Math.random() * targetDeaths.length)];
+      stage.addChild(this.skin);
+      //targetActors[index] = this;
+      this.update = function(){}
+
+      this.removeActor = function() {
+        //stage.removeChild(this.skin);
+        var inst = createjs.Sound.play(this.death.sound, createjs.Sound.INTERRUPT_EARLY,null,null,null,0.2+(this.rad-20)*0.02667,(this.x-500)/500);
+        createjs.Tween.get(this.skin).to({scaleX:8, scaleY:8,alpha:0}, inst.getDuration()/3, this.death.tween).call(function(skin){stage.removeChild(skin)},[this.skin]);
+        //targetActors.splice(targetActors.indexOf(actor),1);
+      }
+      //var tween = createjs.Tween.get(circle).to({x:275,y}, (0.5+i*0.04)*1500, createjs.Ease.bounceOut).call(tweenComplete);
+      //tweens.push({tween:tween, ref:circle});
+    }
+
+    var createTarget = function(x,y,radius,color){
+      
+      var targetFixture = new b2FixtureDef;
+      targetFixture.shape = new b2CircleShape(radius / SCALE);
+      var targetBodyDef = new b2BodyDef;
+      targetBodyDef.type = b2Body.b2_staticBody;
+      targetBodyDef.position.x = x / SCALE;
+      targetBodyDef.position.y = y / SCALE;
+
+      var target = world.CreateBody(targetBodyDef);
+      target.CreateFixture(targetFixture);
+      target.SetUserData(new targetActor(x, y, radius,color));
+    }
+
+    // create bullet body shape and assign actor object
+    var createBullet = function(skin,angle,power,id) {
+      var bulletFixture = new b2FixtureDef;
+      bulletFixture.density = 1;
+      bulletFixture.restitution = 0.6;
+      bulletFixture.shape = new b2CircleShape(9 / SCALE);
+      var bulletBodyDef = new b2BodyDef;
+      bulletBodyDef.type = b2Body.b2_dynamicBody;
+      bulletBodyDef.position.x = skin.x / SCALE;
+      bulletBodyDef.position.y = skin.y / SCALE;
+      var bullet = world.CreateBody(bulletBodyDef);
+      bullet.CreateFixture(bulletFixture);
+      bullet.ApplyImpulse(new b2Vec2(Math.cos(angle) * power,Math.sin(angle) * power), bullet.GetWorldCenter());
+
+      // assign actor
+      var actor = new actorObject(bullet, skin, id);
+      bullet.SetUserData(actor);  // set the actor as user data of the body so we can use it later: body.GetUserData()
+      bodies.push(bullet);
+    }
+
+    // remove actor and it's skin object
+    /*
+    var removeActor = function(actor) {
+      stage.removeChild(actor.skin);
+      actors.splice(actors.indexOf(actor),1);
+    }
+    */
+
+    // box2d update function. delta time is used to avoid differences in simulation if frame rate drops
+    var update = function() {
+      var now = Date.now();
+      var dt = now - lastTimestamp;
+      fixedTimestepAccumulator += dt;
+      lastTimestamp = now;
+      while(fixedTimestepAccumulator >= STEP) {
+        // remove bodies before world timestep
+        for(var i=0, l=bodiesToRemove.length; i<l; i++) {
+          bodiesToRemove[i].GetUserData().removeActor();
+          bodiesToRemove[i].SetUserData(null);
+          world.DestroyBody(bodiesToRemove[i]);
+        }
+        bodiesToRemove = [];
+
+        // update active actors
+        for(var i=0, l=actors.length; i<l; i++) {
+          actors[i].update();
+        }
+
+        world.Step(TIMESTEP, 5, 5);
+
+        fixedTimestepAccumulator -= STEP;
+        world.ClearForces();
+          if(bodies.length > 30) {
+            bodiesToRemove.push(bodies[0]);
+            bodies.splice(0,1);
+          }
+      }
+    }
+
+    return {
+      setup: setup,
+      update: update,
+      createBullet: createBullet,
+      createTarget: createTarget,
+    }
+  })();
+
+    function cannon(id, x, y){
+      this.id = id;
+      this.x = x;
+      this.y = y;
+
+      //rectangle = new createjs.Shape();
+      this.bitmap = new createjs.Bitmap(queue.getResult("cannon"));
+      //rectangle.graphics.beginFill('blue').drawRect(0, 0, 80, 30);
+      //rectangle.regX = 0;
+      this.bitmap.regY = 15;
+      this.bitmap.regX = 9;
+      //rectangle.regY = 15;
+      this.bitmap.x = x;
+      this.bitmap.y = y;
+      //rectangle.x = rectangle.y = 600;
+      //this.bitmap.rotation = -90;
+      stage.addChild(this.bitmap);
+
+      
+      this.update = function(_x,_y){
+        var cannonAngle = Math.atan((_y-this.y)/(_x-this.x))*(180/Math.PI);
+          if(_x < this.x){
+            cannonAngle += 180;
+          }
+          this.bitmap.rotation = cannonAngle;
+      }
+
+      this.remove = function(){
+        stage.removeChild(this.bitmap);
+      }
+    }
+
+    // Chat Initializers
+    // Basically like owning a dope loop pedal
+
+    var channel = new DataChannel();
+    var myId = Math.floor(Math.random()*100000);
+    channel.userid =myId;
+    console.log(myId);
+    var isInitiator = false;
+    var inChannel = false;
+    /*
+    channel.onmessage = function (data, userid, latency) {
+        console.debug(userid, 'posted', data);
+        //appendDIV(data);
+        console.log('latency:', latency, 'ms');
+        createjs.Sound.play("songA");
+    };
+    */
+
+    channel.onopen = function (userid) {
+        //if (document.getElementById('chat-input')) document.getElementById('chat-input').disabled = false;
+        if (document.getElementById('file')) document.getElementById('file').disabled = false;
+
+        if (document.getElementById('init-RTCMultiConnection')) document.getElementById('init-RTCMultiConnection').disabled = true;
+        if(!isInitiator && !inChannel){
+          channel.send(JSON.stringify({op:'newUser', x:myCannon.x, y:myCannon.y}, null, '\t'));
+        }
+        inChannel = true;
+        console.log('connecting to '+userid.toString());
+    };
+
+    channel.onclose = function(event){
+    }
+
+    document.getElementById('init-RTCMultiConnection').onclick = function () {
+        channel.open(document.getElementById('channel').value || 'channel');
+        document.getElementById('join-RTCMultiConnection').disabled = true;
+        document.getElementById('init-RTCMultiConnection').disabled = true;
+        isInitiator=true;
+        window.onbeforeunload = function(e){channel.leave()};
+    };
+
+    document.getElementById('join-RTCMultiConnection').onclick = function () {
+        channel.connect(document.getElementById('channel').value || 'channel');
+        document.getElementById('join-RTCMultiConnection').disabled = true;
+        document.getElementById('init-RTCMultiConnection').disabled = true;
+        window.onbeforeunload = function(e){channel.leave()};
+    };
+
+    document.getElementById('leave').onclick = function() {
+      channel.leave();
+      document.getElementById('join-RTCMultiConnection').disabled = false;
+      document.getElementById('init-RTCMultiConnection').disabled = false;
+    }
+    /*
+    var chatOutput = document.getElementById('chat-output'),
+            fileProgress = document.getElementById('file-progress');
+
+    function appendDIV(data, parent) {
+        var div = document.createElement('div');
+        div.innerHTML = data;
+
+        if (!parent) chatOutput.appendChild(div, chatOutput.firstChild);
+        else fileProgress.appendChild(div, fileProgress.firstChild);
+
+        div.tabIndex = 0;
+        div.focus();
+
+        chatInput.focus();
+    }
+    */
+    /*
+    var chatInput = document.getElementById('chat-input');
+    chatInput.onkeypress = function (e) {
+        if (e.keyCode !== 13 || !this.value) return;
+        appendDIV(this.value);
+        channel.send(this.value);
+        this.value = '';
+        this.focus();
+    };
+    */
+  
+  /* users presence detection */
+    channel.onleave = function (userid) {
+    var message = 'A user whose id is '+ userid + ' left you!';
+        //channel._channels.splice(0,1);
+        //appendDIV(message);
+        console.warn(message);
+        //bodies.splice(bodies.indexOf(contact.GetFixtureB().GetBody()),1);
+        if(isInitiator){
+          channel.eject(userid);
+        }
+        cannons[userid].remove();
+        cannons.splice(cannons.indexOf(cannons[userid]),1);
+    };
+
+      var stage;
+      var queue
+      var canvasRef;
+      var viewWidth;
+      var viewHeight;
+
+      var tweens;
+      var activeCount;
+      var circleCount = 25;
+      var rectangle
+
+      var updateDelayCounter = 0; // counter for delaying creation of bullets
+      var targetCounter = 0;
+
+      var bulletStart;
+
+      var cannons = [];
+      var myCannon;
+
+      var targetDeaths = [];
+      /*
+      Array.prototype.randomElement = function () {
+        return this[Math.floor(Math.random() * this.length)]
+      }
+      */
+
+      function init() {
+        var ctx = document.getElementById('myCanvas').getContext('2d');
+        viewWidth = document.getElementById('canvasContainer').offsetWidth;//window.innerWidth;
+        viewHeight = document.getElementById('canvasContainer').offsetHeight;//window.innerHeight;
+        ctx.canvas.width  = viewWidth;
+        ctx.canvas.height = viewHeight;
+
+        stage = new createjs.Stage('myCanvas');
+        queue = new createjs.LoadQueue(false);
+        box2d.setup();
+
+        var bullets = (function() {
+
+          var spawn = function(id,x,y,x0,y0,time) {
+            var bulletBMP = new createjs.Bitmap(queue.getResult("bullet"));
+            bulletBMP.x = x0;
+            bulletBMP.y = y0;
+            bulletBMP.regX = 9;   // important to set origin point to center of your bitmap
+            bulletBMP.regY = 9; 
+            bulletBMP.snapToPixel = true;
+            bulletBMP.mouseEnabled = false;
+            stage.addChild(bulletBMP);
+
+            var angle = Math.atan((y-y0)/(x-x0));
+            if(x <x0){
+              angle += Math.PI;
+            }
+            if(time > 250){
+              time = 5.7;
+            }
+            else{
+              time = time /43.9;
+            }
+            if(time < 3.2){
+                time = 3.2;
+            }
+            box2d.createBullet(bulletBMP, angle, time,id);
+          }
+
+          return {
+            spawn: spawn
+          }
+        })();
+
+        var pathArray = window.location.href.split( '/' );
+        var host = pathArray[2];
+
+        queue.installPlugin(createjs.Sound);
+        createjs.Sound.registerPlugin(createjs.WebAudioPlugin);
+        queue.addEventListener("complete", onLoadComplete);
+        queue.loadManifest([{id:"shrimp", src:"assets/shrimp64.png"},
+                            {id:"bullet", src:"assets/bullet18.png"},
+                            {id:"cannon", src:"assets/cannonPlaceHolder.png"}, 
+                            {id:"songA", src:"assets/ToneWobbleA.mp3", data: 8},   // Tonewobble from createjs
+                            {id:"songC", src:"assets/ToneWobbleC.mp3", data: 8},
+                            {id:"click", src:"assets/click.ogg", data:16},
+                            {id:"fire", src:"assets/fire.ogg", data:16},
+                            {id:"chime", src:"assets/chime.ogg", data:8},
+                            {id:"chimeM7", src:"assets/chimedown7.ogg", data:4},
+                            {id:"chimeP7", src:"assets/chimeup5.ogg", data:4},
+                            {id:"chimeB", src:"assets/chimeupBounce.ogg", data:4}]); // snapper4298 nikon. edits made
+
+        var targetDeath = function(sound,tween) {
+          this.sound = sound;
+          this.tween = tween;
+        }
+
+        targetDeaths.push(new targetDeath('songA',createjs.Ease.quintIn));
+        targetDeaths.push(new targetDeath('songC', createjs.Ease.quintIn));
+        targetDeaths.push(new targetDeath('chime', createjs.Ease.quadIn));
+        targetDeaths.push(new targetDeath('chimeM7', createjs.Ease.linear));
+        targetDeaths.push(new targetDeath('chimeP7', createjs.Ease.linear));
+        targetDeaths.push(new targetDeath('chimeB', createjs.Ease.bounceIn))
+
+
+        function tick(event){
+          myCannon.update(stage.mouseX, stage.mouseY);
+          //myCannon.bitmap.x =700;
+          stage.update();
+          box2d.update();
+
+          updateDelayCounter++;
+          if(!(updateDelayCounter % 8) && inChannel){
+            channel.send(JSON.stringify({op:'update', rot:myCannon.bitmap.rotation}));
+          }
+
+          if(Math.random() < 0.04 && targetCounter < 40 && isInitiator){
+            var x = 100+800*Math.random();
+            var y = 100+200*Math.random();
+            var radius = 20+Math.random()*30;
+            var color = '#'+Math.floor(Math.random()*16777215).toString(16); //paulirish.com/2009/random-hex-color-code-snippets/
+            box2d.createTarget(x,y,radius,color);
+            targetCounter++;
+            channel.send(JSON.stringify({op:'target', x:x, y:y, radius:radius, color:color}));
+          }
+        }
+
+        function tweenComplete() {
+            activeCount--;
+        }
+
+        function loadBullet(event){
+          bulletStart = Date.now();
+        }
+
+        function fireBullet(event){
+          if(stage.mouseInBounds){
+            bullets.spawn(myId,stage.mouseX, stage.mouseY, myCannon.x,myCannon.y, Date.now()-bulletStart);
+            if (inChannel){
+              channel.send(JSON.stringify({op:'bullet', x:stage.mouseX, y:stage.mouseY, time:Date.now()-bulletStart}));
+            }
+          }
+        }
+
+        function handleClick(event){
+          instance = createjs.Sound.play("fire", createjs.Sound.INTERRUPT_EARLY,null,null,null,0.13,(myCannon.x-500)/500);
+        }
+
+        function mouseMove(event){
+          //channel.send(stage.mouseX);
+        }
+
+        function onLoadComplete(event){
+          var back = new createjs.Shape();
+          //ball.addEventListener("click", handleClick);
+          stage.addEventListener("click", handleClick);
+          stage.addEventListener("stagemousedown", loadBullet);
+          stage.addEventListener("stagemouseup", fireBullet);
+          //stage.addEventListener("stagemousemove", mouseMove);
+          back.graphics.beginFill('B5E6FF').drawRect(0,0,viewWidth,viewHeight);
+
+          stage.addChild(back);
+
+          myCannon = new cannon(myId, Math.random()*1000, 500);
+          cannons[myId] = myCannon;
+
+          var bmap = new createjs.Bitmap(queue.getResult("cannonPlaceHolder"));
+          //rectangle.graphics.beginFill('blue').drawRect(0, 0, 80, 30);
+          //rectangle.regX = 0;
+          bmap.regY = 15;
+          //rectangle.regY = 15;
+          bmap.x = 100;
+          bmap.y = 100;
+          //rectangle.x = rectangle.y = 600;
+          //this.bitmap.rotation = -90;
+          stage.addChild(bmap);
+
+          //box2d.createTarget();
+
+          createjs.Ticker.addEventListener("tick", tick);
+          createjs.Ticker.setFPS(30);
+
+          channel.onmessage = function (data, userid, latency) {
+            //console.debug(userid, 'posted', data);
+            var jsonData = JSON.parse(data);
+            var op = jsonData['op'];
+
+            if(op == 'update'){
+              cannons[userid].bitmap.rotation = jsonData.rot;
+              return;
+            }
+            if(op == 'bullet'){
+              bullets.spawn(userid,jsonData.x, jsonData.y, cannons[userid].x,cannons[userid].y, jsonData.time);
+              return;
+            }
+            if(op == 'target'){
+              box2d.createTarget(jsonData.x, jsonData.y, jsonData.radius, jsonData.color);
+            }
+
+            if(op == 'newUser'){
+              for(elem in cannons){
+                //console.log(elem);
+                var tempCannon = cannons[elem];
+                channel.channels[userid].send(JSON.stringify({op:'addUser', id:elem, x:tempCannon.x, y:tempCannon.y}));
+              }
+              cannons[userid]= new cannon(userid, jsonData.x, jsonData.y);
+              channel.send(JSON.stringify({op:'addUser', id:userid, x:jsonData.x, y:jsonData.y}));
+              return;
+            }
+
+            if(op == 'addUser'){
+              //console.log(jsonData.id);
+              //console.log('myid: '+myId.toString());
+              //console.log(jsonData.id != myId);
+              if(jsonData.id != myId){
+                cannons[jsonData['id']] = new cannon(jsonData.id, jsonData.x, jsonData.y);
+              }
+              return;
+            }
+          };
+
+          //console.log(createjs.Sound.activePlugin.toString());
+        }
+      }
+
+    </script>
+</html>
