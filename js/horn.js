@@ -11,6 +11,11 @@ $( document ).ready(function() {
             sound.stop();
         }
     });
+    
+    var button = document.getElementById('status');
+    button.addEventListener('pointerdown', function(){
+        play();
+    }
 });
 
 function play () {
