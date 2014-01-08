@@ -84,6 +84,7 @@ h1 {
     //font-family: 'Finger Paint', cursive;
 	font-size: 200%;
 	color: #8d7f4e;
+    touch-action: none;
 }
 
 p {
