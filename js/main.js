@@ -1,10 +1,10 @@
-var doAnimation = true;
+var animationQueue = {};
 
 $( document ).ready(function() {
     var list = $( "ul.navbar li" );
     var array = jQuery.makeArray(list);
     
-    array[0].addEventListener('pointerup', function(e){
+    array[0].addEventListener('pointerdown', function(e){
         coverAnim('partials/partial1.html');
     });
     
@@ -15,15 +15,18 @@ $( document ).ready(function() {
     array[2].addEventListener('pointerdown', function(e){
         coverAnim('partials/partial3.html');
     });
-    
-    animate();
 });
 
 
 function coverAnim(targetURL) {
+    if(animationQueue.wave){  //check if the wave property is defined
+        return;
+    }
+    else {
+        animationQueue.wave = 1;
+    }
     var $w = $(window);
     var target = $w.height() + $w.scrollTop() - 100;
-    doAnimation = true;
     
     var $w1 = $( '#w1' );
     var $w2 = $( '#w2' );
@@ -117,13 +120,13 @@ function revealAnim(target){
             $w4.css('height', this.h+'px');
         } )
         .onComplete( function(){
-            doAnimation = false;
+            delete animationQueue.wave;
         })
         .start();
 }
 
 function animate() {
-    if(doAnimation){
+    if(!jQuery.isEmptyObject(animationQueue)){
         requestAnimationFrame( animate );
         TWEEN.update();
     }
