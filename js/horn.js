@@ -15,7 +15,7 @@ $( document ).ready(function() {
     var button = document.getElementById('status');
     button.addEventListener('pointerdown', function(){
         play();
-    }
+    });
 });
 
 function play () {
