@@ -12,7 +12,7 @@ $( document ).ready(function() {
         }
     });
     
-    var button = document.getElementById('status');
+    var button = document.getElementById('play');
     button.addEventListener('pointerdown', function(){
         play();
     });
