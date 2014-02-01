@@ -26,7 +26,7 @@ function coverAnim(targetURL) {
         animationQueue.wave = 1;
     }
     var $w = $(window);
-    var target = $w.height() + $w.scrollTop() - 100;
+    var target = $w.height() + $w.scrollTop() -  $('#sunset').height();
     
     var $w1 = $( '#w1' );
     var $w2 = $( '#w2' );
